@@ -1,0 +1,43 @@
+on: 
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version'     
+        required: true
+      checksum:
+        description: 'SHA256 Checksum'
+        required: true
+
+name: Create Release
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Build
+      run: URL="https://dl.discordapp.net/apps/linux/${{ github.events.inputs.version }}/discord-${{ github.events.inputs.version }}.deb" CHECKSUM="${{ github.events.inputs.checksum }}" make
+    - name: Create Draft Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: "v${{ github.events.inputs.version }}"
+        release_name: "v${{ github.events.inputs.version }}"
+        draft: true
+        prerelease: false
+
+    - uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./dist/discord.deb
+        asset_name: "discord-debian-patched-${{ github.events.inputs.version }}.deb"
+        asset_content_type: application/vnd.debian.binary-package
+
+    - uses: eregon/publish-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        release_id: ${{ steps.create_release.outputs.id }}
