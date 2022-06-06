@@ -46,7 +46,7 @@ dist/discord.deb: discord.deb
 
 install: dist/discord.deb
 	@echo "Installing..."
-	@sudo apt --fix-broken install ./dist/discord.deb
+	@sudo apt --fix-broken install ./dist/discord.deb -y
 
 uninstall:
 	@echo "Uninstalling..."
