@@ -39,6 +39,7 @@ dist/discord.deb: discord.deb
 	@mv DEBIAN ./build/discord/DEBIAN
 	@echo Patching Discord dependencies
 	@sed -i 's/libappindicator1/libayatana-appindicator3-1/g' ./build/discord/DEBIAN/control
+	@sed -i 's/Package: discord/Package: discord-debian-patched/g' ./build/discord/DEBIAN/control
 	@echo "Building..."
 	@mkdir -p dist
 	@dpkg -b ./build/discord ./dist/discord.deb
