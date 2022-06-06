@@ -19,7 +19,7 @@ discord.deb:
 	fi
 
 	@file_checksum="$(sha256sum discord.deb | cut -d ' ' -f 1)"
-	@if [ "${file_checksum}" != "${CHECKSUM}" ]]; then \
+	@if [ "${file_checksum}" != "${CHECKSUM}" ]; then \
 		echo "Checksum mismatch"; \
 		exit 1; \
 	fi
