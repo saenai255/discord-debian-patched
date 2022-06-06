@@ -9,7 +9,7 @@ Copy paste these commands:
 ```sh
 git clone https://github.com/saenai255/discord-debian-patched
 cd discord-debian-patched/
-make
+URL="url/to/deb" CHECKSUM="sha256sum-of-deb" make
 make install
 ```
 
