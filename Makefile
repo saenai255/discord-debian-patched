@@ -18,12 +18,17 @@ discord.deb:
 		exit 1; \
 	fi
 
-	@file_checksum="$(sha256sum discord.deb | cut -d ' ' -f 1)"
-	@if [ "${file_checksum}" != "${CHECKSUM}" ]; then \
+	@file_checksum="$(sha256sum ./discord.deb | cut -d ' ' -f 1)"
+	@if [ "${file_checksum}" = "${CHECKSUM}" ]; then \
+		@echo "Checksum OK" \
+	else \
+		rm discord.deb; \
 		echo "Checksum mismatch"; \
+		echo "Expected: ${CHECKSUM}"; \
+		echo "Actual:   ${file_checksum}"; \
 		exit 1; \
 	fi
-	@echo "Checksum OK"
+	
 	
 dist/discord.deb: discord.deb
 	@echo "dist/discord.deb"
